@@ -85,7 +85,9 @@ if word:
         for tweet in tweets:
             if tweet.metadata['iso_language_code'] == 'pt':
                 #print(tweet.text)
-                scores.append(s.polarity_scores(tweet.text))
+                data = s.polarity_scores(tweet.text)
+                data['text'] = tweet.text
+                scores.append(data)
         st.success('Done')
 
     for score in scores:
@@ -103,3 +105,12 @@ if word:
     #pos,neg,neu,avg = get_probabilities_(data)
     st.write("""### Percentual de negativos: {:.2f}%""".format(neg*100))
     st.write("""### Percentual de positivos: {:.2f}%""".format(pos*100))
+    st.write("""## Exemplos de tweets positivos""")
+    data = data.sort_values(by='compound', ascending=False, ignore_index = True)
+    st.write("""### "{}" """.format(data['text'][0]))
+    st.write("""### "{}" """.format(data['text'][1]))
+    st.write("""### "{}" """.format(data['text'][2]))
+    st.write("""## Exemplos de tweets negativos""")
+    st.write("""### "{}" """.format(data['text'][len(data)-1]))
+    st.write("""### "{}" """.format(data['text'][len(data)-2]))
+    st.write("""### "{}" """.format(data['text'][len(data)-3]))
